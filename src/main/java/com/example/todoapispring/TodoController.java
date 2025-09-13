@@ -10,16 +10,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@RequestMapping("/api/v1/todos")
 public class TodoController {
+    private TodoService todoService;
+    private TodoService todoService2;
 
     private static List<Todo> todoList;
 
+    public static final String Todo_Not_Found="Todo not Found";
 
 
-    private TodoService todoService;  // This Statement referred as `Composition` in OOPs
 
-    public TodoController( @Qualifier("FakeTodoService") TodoService todoService){
+//    private TodoService todoService;  // This Statement referred as `Composition` in OOPs
+
+    public TodoController( @Qualifier("FakeTodoService") TodoService todoService2,
+                           @Qualifier("AnotherTodoService")TodoService todoService){
         this.todoService = todoService;
+        this.todoService2=todoService2;
         todoList=new ArrayList<>();
         todoList.add(new Todo(1,false,"Todo 1",1));
         todoList.add(new Todo(2 ,true,"Todo 2",2));
@@ -30,6 +37,11 @@ public class TodoController {
 //         DI we should use something called as Dependency Injection
 
 
+    @GetMapping
+    public ResponseEntity<List<Todo>> getTodos(@RequestParam(required = false) boolean isCompleted){
+        System.out.println("Incoming Query Params : "+ isCompleted+" "+ todoService2.doSomething());
+        return ResponseEntity.ok(todoList);
+    }
 
     @GetMapping("/todos")
 //    @RequestMapping("/api/v1/todos")    Used for versioning of api

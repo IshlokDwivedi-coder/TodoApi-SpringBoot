@@ -1,5 +1,6 @@
 package com.example.todoapispring;
 
+
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
@@ -7,12 +8,12 @@ import org.springframework.stereotype.Service;
 @Service("FakeTodoService")
 public class FakeTodoService implements TodoService{
 
-    public String dosmth(){
+
+
+    @TimeMonitor
+    public String doSomething(){
+        for(long i = 0; i < 10000000000L; i++) {}//join point
         return "Something";
     }
 
-    @Override
-    public String doSomething() {
-        return "";
     }
-}
